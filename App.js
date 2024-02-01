@@ -1,20 +1,51 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StatusBar } from "expo-status-bar";
+import { StyleSheet, Text, View } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator, StackView } from "@react-navigation/stack";
+import LoginScreen from "./src/screens/login/LoginScreen";
+import { useState, useEffect } from "react";
+import HomeScreen from "./src/screens/home/HomeScreen";
+import provideFirebaseApp from "./src/firebase/firebase";
+import SignUpScreen from "./src/screens/login/SignUpScreen";
+import { LogBox } from "react-native";
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+  useEffect(() => {
+    provideFirebaseApp();
+  });
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+  const [isSignedIn, setIsSignedIn] = useState(false);
+  LogBox.ignoreAllLogs(); //Ignore all log notifications
+
+  const Stack = createStackNavigator();
+
+  const signIn = (status) => {
+    setIsSignedIn(status);
+  };
+
+  if (!isSignedIn) {
+    return (
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen
+            name="LogIn"
+            component={LoginScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="HomeScreen"
+            component={HomeScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="SignUpScreen"
+            component={SignUpScreen}
+            options={{ headerShown: false }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    );
+  } else {
+    return <HomeScreen></HomeScreen>;
+  }
+}
