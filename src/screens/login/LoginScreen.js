@@ -9,7 +9,6 @@ import {
 } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { authenticate, signUp } from "../../firebase/auth";
 
 export default function LoginScreen({ navigation }) {
   const [loginError, setLoginError] = useState(null);
@@ -43,14 +42,14 @@ export default function LoginScreen({ navigation }) {
         <View style={styles.formContainer}>
           <TouchableOpacity
             onPress={() => {
-              authenticate(email, password).then((user) => {
-                if (user) {
-                  setLoginError(null);
-                  navigation.navigate("HomeScreen", { user });
-                } else {
-                  setLoginError("Failed to log in.");
-                }
-              });
+              //   authenticate(email, password).then((user) => {
+              //     if (user) {
+              //       setLoginError(null);
+              //       navigation.navigate("HomeScreen", { user });
+              //     } else {
+              //       setLoginError("Failed to log in.");
+              //     }
+              //   });
             }}
             style={styles.signInButton}
           >
@@ -66,7 +65,7 @@ export default function LoginScreen({ navigation }) {
             <Text style={styles.signInText}>Sign Up!</Text>
           </TouchableOpacity>
         </View>
-        
+
         {loginError ? (
           <Text style={styles.errorText}>{loginError}</Text>
         ) : (

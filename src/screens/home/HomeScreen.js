@@ -5,12 +5,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import React, { useState } from "react";
 
-// Screens
-import SettingsScreen from "../settings/SettingsScreen";
-import MatchesScreen from "../matches/MatchesScreen";
-import LoadingPage from "./LoadingPage";
-import { getRestaurantsByZip } from "../../yelp/yelp";
-import SwipingScreen from "../swipe/SwipingScreen";
+import SignUpScreen from "../login/SignUpScreen";
 
 // Screen Names
 const matches = "Matches";
@@ -20,48 +15,30 @@ const swipe = "Swipe";
 const Tab = createBottomTabNavigator();
 
 export default function HomeScreen({ route, navigation }) {
-  const { user } = route.params;
-  const [restaurantInfo, setRestaurantInfo] = useState(null);
-  
-  const getRestaurants = () => {
-    return getRestaurantsByZip(user.location);
-  }
-
   return (
     <React.Fragment>
-      {restaurantInfo ? (
-        <Tab.Navigator
-          initialRouteName={matches}
-          screenOptions={({ route }) => ({
-            tabBarIcon: ({ focused, color, size }) => {
-              let iconName;
-              let routeName = route.name;
+      <Tab.Navigator
+        screenOptions={({ route }) => ({
+          tabBarIcon: ({ focused, color, size }) => {
+            let iconName;
+            let routeName = route.name;
 
-              if (routeName === matches) {
-                iconName = focused ? "home" : "home-outline";
-              } else if (routeName === settings) {
-                iconName = focused ? "settings" : "settings-outline";
-              }
-              else if (routeName === swipe) {
-                iconName = focused ? "play" : "play-outline";
-              }
-              return <Ionicons name={iconName} size={size} color={color} />;
-            },
-          })}
-        >
-          <Tab.Screen name={swipe}>
-            {() => <SwipingScreen data={restaurantInfo} user={user} />}          
-          </Tab.Screen>
-          <Tab.Screen name={matches} component={MatchesScreen} initialParams={ {user: user} }/>
-          <Tab.Screen name={settings} component={SettingsScreen} initialParams={ {user: user} }/>
-        </Tab.Navigator>
-      ) : (
-        <React.Fragment>
-            <LoadingPage />
-            {setRestaurantInfo(getRestaurants())}
-        </React.Fragment>
-      )}
+            if (routeName === matches) {
+              iconName = focused ? "home" : "home-outline";
+            } else if (routeName === settings) {
+              iconName = focused ? "settings" : "settings-outline";
+            } else if (routeName === swipe) {
+              iconName = focused ? "play" : "play-outline";
+            }
+            return <Ionicons name={iconName} size={size} color={color} />;
+          },
+        })}
+      >
+        <Tab.Screen name="Swipe">{() => <LoginScreen />}</Tab.Screen>
+        //
+        <Tab.Screen name={matches} component={SignUpScreen} />
+        {/* <Tab.Screen name={settings} component={SettingsScreen} /> */}
+      </Tab.Navigator>
     </React.Fragment>
-
   );
 }

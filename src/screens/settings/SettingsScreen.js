@@ -1,18 +1,24 @@
 import React, { useReducer, useState } from "react";
 
-import { StyleSheet, Text, View, Image, FlatList, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  FlatList,
+  TouchableOpacity,
+} from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import Fontisto from "@expo/vector-icons/Fontisto";
 import Preference from "./preference";
 import PreferenceItem from "../../components/settings/preferenceItem";
-import { signOut } from "../../../../backend/firebase/auth";
-import { useNavigation } from '@react-navigation/native';
 
-export default function SettingsScreen({ route, navigation }){
+import { useNavigation } from "@react-navigation/native";
 
+export default function SettingsScreen({ route, navigation }) {
   const [user, setUser] = useState(route.params.user);
-  
+
   const preferences = [
     { preference: new Preference("Keto"), id: Math.random().toString() },
     { preference: new Preference("Vegan"), id: Math.random().toString() },
@@ -54,20 +60,19 @@ export default function SettingsScreen({ route, navigation }){
           }}
         ></FlatList>
       </View>
-      
+
       <TouchableOpacity
         onPress={() => {
-          signOut()
+          // signOut()
           navigation.navigate("LogIn");
         }}
         style={styles.signOutButton}
-      > 
+      >
         <Text style={styles.signOutText}> Sign Out!</Text>
       </TouchableOpacity>
-
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   screenView: {
@@ -153,5 +158,3 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
 });
-
-
